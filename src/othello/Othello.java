@@ -735,7 +735,6 @@ public class Othello {
      * @return 
      */
     Move getOpponentMove(BufferedReader keyboard) {
-       // System.out.print("Player Please Enter your Move: ");
         try{
             String read = keyboard.readLine();
             while (!validSyntax(read)){
@@ -757,7 +756,6 @@ public class Othello {
         int pos = (Integer.parseInt(arrayLoc[1]));
         if(legalMove(move) == true){
             for(int i = 0; i <=moveStack.size();i++){
-                OthelloOut.printComment(moveStack.toString());
             Board.boardArray[moveStack.pop()] = pieces[OppPieceINDEX].toString().charAt(0);
             }
             Board.boardArray[pos] = pieces[OppPieceINDEX].toString().charAt(0);
@@ -777,14 +775,13 @@ void applyMoveAI(Move move){
         int col = (Integer.parseInt(arrayLoc[1]));
         getMyMove(col,row);
             Board.boardArray[(col)+row] = pieces[MyPieceINDEX].toString().charAt(0);
-            OthelloOut.printComment(pieces[MyPieceINDEX].toString() + " "+((char)(col+97)) + " "+ (row/10) + "\n");
             int size = moveStack.size();
         for(int i = 1; i <= size;i++){
             Board.boardArray[moveStack.pop()] = pieces[MyPieceINDEX].toString().charAt(0);
             }
         moveStack.removeAll(moveStack);
             }else{
-                OthelloOut.printComment(pieces[MyPieceINDEX].toString());
+                //OthelloOut.printComment(pieces[MyPieceINDEX].toString());
                 
             }
         }
@@ -852,14 +849,12 @@ void applyMoveAI(Move move){
             if (game.myTurn() == false){
                move = game.getMyMove();
                game.applyMoveAI(move);
-               //OthelloOut.printMove(pieces[MyPieceINDEX], move);
                game.printBoard();
                game.switchPlayers();
             }else{  
                 move = game.getOpponentMove(keyboard);
                 game.applyMove(move);
                 game.printBoard();
-                //OthelloOut.printMove(pieces[OppPieceINDEX], move);
                 game.switchPlayers();
             }
         }//while game is not over

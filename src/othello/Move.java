@@ -27,7 +27,6 @@ public class Move implements Comparable<Move>{
     Move (String moveStr){
          String[] sepMoveStr = moveStr.split(" ");
       value = (((int)sepMoveStr[1].toString().charAt(0) - 96) + (((int)sepMoveStr[2].toString().charAt(0) - 48) * 10 ));
-      System.out.print(pos);
       pos = Integer.parseInt(sepMoveStr[2]);
     }
     /**
