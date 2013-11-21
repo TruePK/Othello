@@ -6,7 +6,7 @@ package othello;
  */
 public class Move implements Comparable<Move>{
     static final int PASS_VALUE = 0;
-    static private int pos;
+    static private char pos;
     static private int value;
     /**
      * Default constructor that initializes a pass move
@@ -20,14 +20,19 @@ public class Move implements Comparable<Move>{
      * @param moveValue -- parameter for value of move
      */
     Move(int movePos, int moveValue){
-        pos = movePos;
-        value = moveValue;
+       int currPoss = movePos + moveValue;
+        pos = ((char)((currPoss%10)+96));//a-h
+        value = ((currPoss/10));//1-8
     }//Move constructor
     
     Move (String moveStr){
          String[] sepMoveStr = moveStr.split(" ");
-      value = (((int)sepMoveStr[1].toString().charAt(0) - 96) + (((int)sepMoveStr[2].toString().charAt(0) - 48) * 10 ));
-      pos = Integer.parseInt(sepMoveStr[2]);
+      pos = (sepMoveStr[1].toString().charAt(0));
+      value = (Integer.parseInt(sepMoveStr[2]));
+      if(moveStr.length() == 1){
+          value = -1;
+          pos = 'z';
+      }
     }
     /**
      * 
