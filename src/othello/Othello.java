@@ -774,8 +774,6 @@ public class Othello {
                  String[] arrayLoc = move.toString().split(" ");
 
         if((((int)arrayLoc[0].charAt(0))) != 'z' && (((int)arrayLoc[0].charAt(0))) != -1){
-        
-            OthelloOut.printComment("Move Passed To Apply");
         int pos = ((Integer.parseInt(arrayLoc[1])) * 10) + ((((int)arrayLoc[0].charAt(0))-96));
         if(legalMove(move) == true){
             OthelloOut.printComment("Got a legal Move!");
@@ -874,16 +872,24 @@ void applyMoveAI(Move move){
         Othello game = new Othello(initializeStr); //Initialize game        
         game.printBoard();
         OthelloOut.printReady(pieces[MyPieceINDEX]);  //let referee know that I'm readly to play
-        Move move;       
+       Move move;
+
         while (!game.over()) {
             if (game.myTurn() == false){
+                char myChar = pieces[MyPieceINDEX].toString().charAt(0);
+                char oppChar = pieces[OppPieceINDEX].toString().charAt(0);
                 OthelloOut.printComment("Start AI");
-               move = game.getMyMove();
-               //move = game.board.generateMoves()
-               game.applyMoveAI(move);
-               game.printBoard();
-               game.switchPlayers();
-            }else{                  
+                Stack<Move> moveToMake = new Stack<Move>();
+                Stack<Integer> posToTurn = new Stack<Integer>();
+                moveToMake = game.board.findMoves(myPiece, oppChar, game.board);
+                move = game.board.getRandomMoveFromStack(moveToMake);
+                posToTurn= game.board.genrateMove(myPiece, oppChar, game.board, move);
+                game = game.board.applyMove(game, move,posToTurn);
+                game.printBoard();
+                game.switchPlayers();
+            }else{
+                char myChar = pieces[OppPieceINDEX].toString().charAt(0);
+                char oppChar = pieces[MyPieceINDEX].toString().charAt(0);
                 OthelloOut.printComment("Start with OPP");
                 move = game.getOpponentMove(keyboard);
                 game.applyMove(move);
