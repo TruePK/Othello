@@ -2,6 +2,7 @@
 package othello;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *
@@ -15,6 +16,7 @@ public class Board {
      * @param myColor -- color of agent 
      */
  static char boardArray[] = new char[100];// the board
+ Stack<Integer> moveStack = new Stack<Integer>();
  static final int a = 10, b = 20, c = 30, d = 40, e = 50, f = 60, g = 70, h = 80;// use for referencing colum number
                                  ;
     Board(PieceColor myColor){        
@@ -57,8 +59,215 @@ public class Board {
      * @param player -- player for whom to generate moves
      * @return List of all valid moves for player 
      */
-    public ArrayList<Move> generateMoves(PlayerType player){
-        return null;
+    public Stack<Integer> generateMoves(PlayerType player){
+        
+       moveStack.removeAll(moveStack);
+        int pos = 0;
+        Move[] moveToMake = new Move[100];
+        
+        for(int col = 11; col <=81; col= col + 10){
+          for(int row = 0; row<=7;row++){
+              
+            if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col)+(row+1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//---> 
+                  int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(Board.boardArray[(col)+(row+i)] != '*' && Board.boardArray[(col)+(row+i)] != '-' ){
+                        if(Board.boardArray[(col)+(row+i)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                            moveStack.push((col)+(row+i));
+                            numOfAdds++;
+                        }
+                        if(Board.boardArray[(col)+(row+i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i=9;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col)+(row-1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//<---
+                 int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(Board.boardArray[(col)+(row-i)] != '*' && Board.boardArray[(col)+(row-i)] != '-' ){
+                        if(Board.boardArray[(col)+(row-i)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                           moveStack.push((col)+(row-i));
+                        numOfAdds++;
+                        }
+                        if(Board.boardArray[(col)+(row-i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i=8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col-10)+(row)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//UP
+                 int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(((col-(10*i))+(row)) > 11 && Board.boardArray[(col-(10*i))+(row)] != '*' && Board.boardArray[(col-(10*i))+(row)] != '-' ){
+                        if(Board.boardArray[((col-(10*i))+(row))] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col-(10*i))+(row));
+                                numOfAdds++;
+                        }
+                        if(Board.boardArray[(col-(10*i))+(row)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        
+                    }
+                }
+              }
+              
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col+10)+(row)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//DOWN
+                  int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(((col+(10*i))+(row)) < 89 && Board.boardArray[(col+(10*i))+(row)] != '*' && Board.boardArray[(col+(10*i))+(row)] != '-' ){
+                       if(Board.boardArray[(col+(10*i))+(row)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col+(10*i))+(row));
+                                numOfAdds++;
+                       }
+                        if(Board.boardArray[(col+(10*i))+(row)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col+10)+(row+1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//DOWN & right
+                  int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(Board.boardArray[(col+(10*i))+(row+i)] != '*' && Board.boardArray[(col+(10*i))+(row+i)] != '-' ){
+                       if(Board.boardArray[(col+(10*i))+(row+i)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col+(10*i))+(row+i));
+                                numOfAdds++;
+                       }
+                        if(Board.boardArray[(col+(10*i))+(row+i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col+10)+(row-1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//DOWN & Right
+                  int numOfAdds = 0;
+                for(int i = 1; i<=8;i++){
+                    if(Board.boardArray[(col+(10*i))+(row-i)] != '*' && Board.boardArray[(col+(10*i))+(row-i)] != '-' ){
+                       if(Board.boardArray[(col+(10*i))+(row-i)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col+(10*i))+(row-i));
+                                numOfAdds++;
+                       }
+                        if(Board.boardArray[(col+(10*i))+(row-i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col-10)+(row+1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//UP & right
+                        int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(((col-(10*i))+(row+i)) > 11 && Board.boardArray[(col-(10*i))+(row+i)] != '*' && Board.boardArray[(col-(10*i))+(row+i)] != '-' ){
+                        if(Board.boardArray[(col-(10*i))+(row+i)] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col-(10*i))+(row+i));
+                                numOfAdds++;
+                        }
+                        if(Board.boardArray[(col-(10*i))+(row+i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }
+              if((Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0) == Board.boardArray[(col-10)+(row-1)]) 
+                      && Board.boardArray[(col)+(row)] == '-'){//UP & Left
+                      int numOfAdds = 0;
+                for(int i = 1; i<=7;i++){
+                    if(((col-(10*i))+(row-i)) > 11 && Board.boardArray[(col-(10*i))+(row-i)] != '*' && Board.boardArray[(col-(10*i))+(row-i)] != '-' ){
+                       if(Board.boardArray[((col-(10*i))+(row-i))] == Othello.pieces[Othello.OppPieceINDEX].toString().charAt(0)){
+                                moveStack.push((col-(10*i))+(row-i));
+                                numOfAdds++;
+                       }
+                        if(Board.boardArray[(col-(10*i))+(row-i)] == Othello.pieces[Othello.MyPieceINDEX].toString().charAt(0)){
+                            Move move = new Move(col,row);
+                            moveToMake[pos] =  move;
+                            pos++;
+                            i=8;
+                        }
+                    }else{
+                        i = 8;
+                        for(int j = 1; j <=numOfAdds;j++){
+                            moveStack.pop();
+                        }
+                        //moveStack.removeAll(moveStack);
+                    }
+                }
+              }  
+          }
+        }
+        
+        return moveStack;    
     }//generateMoves
     
     /**

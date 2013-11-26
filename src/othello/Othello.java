@@ -57,12 +57,8 @@ public class Othello {
         String[] arrayLoc = amove.toString().split(" ");
         int col = ((Integer.parseInt(arrayLoc[1]))% 10) * 10;
         int row = ((((int)arrayLoc[0].charAt(0))-96));
-       int[] stateToChange = new int[30];
-        int[] tempToChange = new int[30];
-        int posInSTC = 0;
         
         char currChar = Board.boardArray[(col)+row] ;
-        boolean notFound = true;
         
             if(currChar != '-'){
                 System.out.print("C illegal\n");
@@ -77,7 +73,7 @@ public class Othello {
                     && (Board.boardArray[(col+10)+(row+1)] == '-'||Board.boardArray[(col+10)+(row+1)] == '*')
                     && (Board.boardArray[(col-10)+(row-1)] == '-'||Board.boardArray[(col-10)+(row-1)] == '*')
                     && (Board.boardArray[(col-10)+(row+1)] == '-'||Board.boardArray[(col-10)+(row+1)] == '*')){
-                notFound = false;
+                returnVal = false;
                 System.out.print("C illegal\n");
             }
             OthelloOut.printComment("Stating Scan...");
@@ -85,14 +81,14 @@ public class Othello {
             int j = 0;
             if((pieces[MyPieceINDEX].toString().charAt(0) == Board.boardArray[(col)+(row+1)])){//--->
                 int numOfAdds = 0;
-                for(int i = 0; i<7;i++){
+                for(int i = 0; i<9;i++){
                     if(Board.boardArray[(col)+(row+i)] != '*' && Board.boardArray[(col)+(row+i)] != '-' ){
                         if(Board.boardArray[(col)+(row+i)] == pieces[MyPieceINDEX].toString().charAt(0)){
                             moveStack.push(col+(row+i));
                             numOfAdds++;
                         }
                         if(Board.boardArray[(col)+(row+i)] == pieces[OppPieceINDEX].toString().charAt(0)){
-                            i = 9;
+                            i = 10;
                             returnVal = true;
                         }
                     }else{
@@ -111,14 +107,14 @@ public class Othello {
             //OthelloOut.printComment("<----");
             if((pieces[MyPieceINDEX].toString().charAt(0) == Board.boardArray[(col)+(row-1)])){//<---
                 int numOfAdds = 0;
-                for(int i = 0; i<7;i++){
+                for(int i = 0; i<9;i++){
                     if(Board.boardArray[(col)+(row-i)] != '*' && Board.boardArray[(col)+(row-i)] != '-' ){
                         if(Board.boardArray[(col)+(row-i)] == pieces[MyPieceINDEX].toString().charAt(0)){
                             moveStack.push(col+(row-i));
                             numOfAdds++;
                         }
                         if(Board.boardArray[(col)+(row-i)] == pieces[OppPieceINDEX].toString().charAt(0)){
-                            i = 9;
+                            i = 10;
                             returnVal = true;
                         }
                     }else{
@@ -814,7 +810,7 @@ void applyMoveAI(Move move){
         moveStack.removeAll(moveStack);
          OthelloOut.printMove(pieces[MyPieceINDEX], move);
             }else{
-                OthelloOut.printComment(pieces[MyPieceINDEX].toString());
+               System.out.print(pieces[MyPieceINDEX].toString() + "\r\n");
                 
             }
           
@@ -883,6 +879,7 @@ void applyMoveAI(Move move){
             if (game.myTurn() == false){
                 OthelloOut.printComment("Start AI");
                move = game.getMyMove();
+               //move = game.board.generateMoves()
                game.applyMoveAI(move);
                game.printBoard();
                game.switchPlayers();
