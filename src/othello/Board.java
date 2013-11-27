@@ -499,24 +499,26 @@ public class Board {
      * @param player  -- player for whom to apply move
      * @param amove   -- move to apply to board
      */
-    public Othello applyMove(Othello game, Move move,Stack<Integer> moveStack){
+    public Othello applyMove(Othello game, Move move,Stack<Integer> moveStack,int sender,boolean printIt){
         OthelloOut.printComment("Start Apply");
             if(move != null || moveStack.size() != 0){
         String[] arrayLoc = move.toString().split(" ");
         int row = (((int)arrayLoc[0].charAt(0))-96);
         int col = (Integer.parseInt(arrayLoc[1]))*10; 
         
-        game.board.boardArray[((col)+row)] = game.pieces[game.MyPieceINDEX].toString().charAt(0);
+        game.board.boardArray[((col)+row)] = game.pieces[sender].toString().charAt(0);
             int size = moveStack.size();
         for(int i = 1; i <= size;i++){
-            game.board.boardArray[moveStack.pop()] = game.pieces[game.MyPieceINDEX].toString().charAt(0);
+            game.board.boardArray[moveStack.pop()] = game.pieces[sender].toString().charAt(0);
             }
         moveStack.removeAll(moveStack);
-         OthelloOut.printMove(game.pieces[game.MyPieceINDEX], move);
-            }else{
-               System.out.print(game.pieces[game.MyPieceINDEX].toString() + "\r\n");
-                
+         if(printIt == true){
+         OthelloOut.printMove(game.pieces[sender], move);
             }
+        }
+            if(move == null && printIt == true){
+         System.out.print(game.pieces[sender].toString() + "\r\n");
+        }
         return game;
     }//applyMove
 
